@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-#define STUDENTS_NUM 10000  
+#define STUDENTS_NUM 20000  
 
 typedef struct temp {
     char  sname[8];
@@ -16,7 +16,7 @@ typedef struct temp {
 void initStudents(student* s, int num) {
     srand((unsigned int)time(NULL));
 
-    sprintf(s[0].sname, "S0xxx");
+    sprintf(s[0].sname, "S00xxx");
     sprintf(s[0].sid, "U202xxxxxx");
     for (int j = 0; j < 8; j++) {
         s[0].scores[j] = rand() % 80 + 20;
@@ -25,7 +25,7 @@ void initStudents(student* s, int num) {
 
     for (int i = 1; i < num; i++) {
 
-        sprintf(s[i].sname, "S%04d", i);
+        sprintf(s[i].sname, "S%05d", i);
         sprintf(s[i].sid, "U0000%05d", i);
         for (int j = 0; j < 8; j++) {
             s[i].scores[j] = rand() % 80 + 20;
@@ -35,7 +35,6 @@ void initStudents(student* s, int num) {
 }
 
 void display(student* s, int num) {
-    printf("前五位：\n");
     for (int i = 0; i < 5; i++) {
         printf("%s\t %s\t各科成绩：", s[i].sname, s[i].sid);
         for (int j = 0; j < 8; j++) {
@@ -43,7 +42,7 @@ void display(student* s, int num) {
         }
         printf("平均分：%d\n", s[i].average);
     }
-    printf("后五位：\n");
+    printf("......\n");
     for (int i = num - 5; i < num; i++) {
         printf("%s\t %s\t各科成绩：", s[i].sname, s[i].sid);
         for (int j = 0; j < 8; j++) {
@@ -53,8 +52,17 @@ void display(student* s, int num) {
     }
 }
 
-extern void computeAverageScore(student* s, int num);
+//extern void computeAverageScore(student* s, int num);
 
+void computeAverageScore(student* s, int num) {
+    for (int i = 0; i < num; i++) {
+        int sum = 0;
+        for (int j = 0; j < 8; j++) {
+            sum += s[i].scores[j];
+        }
+        s[i].average = sum / 8;
+    }
+}
 
 /*
 void sortStudentsByAverage(student* s, int num) {
@@ -95,6 +103,7 @@ void sortStudentsByAverage(student* s, int low, int high) {
 int main() {
     student* s = malloc(STUDENTS_NUM * sizeof(student));
     initStudents(s, STUDENTS_NUM);
+    printf("学生个数为: %d\n", STUDENTS_NUM);
     display(s, STUDENTS_NUM);
     LARGE_INTEGER freq, start, end;
     QueryPerformanceFrequency(&freq);
@@ -103,9 +112,8 @@ int main() {
     QueryPerformanceCounter(&start);
     computeAverageScore(s, STUDENTS_NUM);
     QueryPerformanceCounter(&end);
-
     double compute_time = (end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
-    printf("\n计算平均分用时：%.2f ms\n", compute_time);
+    printf("\n排序前:\n");
     display(s, STUDENTS_NUM);
 
     // 测试排序性能
@@ -113,11 +121,12 @@ int main() {
     //sortStudentsByAverage(s, STUDENTS_NUM);
     sortStudentsByAverage(s, 0, STUDENTS_NUM - 1);
     QueryPerformanceCounter(&end);
-
     double sort_time = (end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
-    printf("\n排序用时：%.2f ms\n", sort_time);
+    printf("\n排序后:\n");
     display(s, STUDENTS_NUM);
 
+    printf("\n计算平均分用时：%.2f ms\n", compute_time);
+    printf("排序用时：%.2f ms\n", sort_time);
     free(s);
     return 0;
 }
