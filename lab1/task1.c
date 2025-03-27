@@ -59,7 +59,7 @@ int main() {
 void init(student* old_s, int N) {
 
     // 初始化old_s
-    strcpy(old_s[0].name, "czh");
+    strcpy(old_s[0].name, "111");
     old_s[0].age = 19;
     old_s[0].score = 13;
     strcpy(old_s[0].remark, "soso");
