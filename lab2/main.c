@@ -17,7 +17,7 @@ void initStudents(student* s, int num) {
     srand((unsigned int)time(NULL));
 
     sprintf(s[0].sname, "S0xxx");
-    sprintf(s[0].sid, "U2023xxxxx");
+    sprintf(s[0].sid, "U202xxxxxx");
     for (int j = 0; j < 8; j++) {
         s[0].scores[j] = rand() % 80 + 20;
     }
