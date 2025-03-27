@@ -4,107 +4,59 @@
 #include <time.h>
 #include <windows.h>
 
-#define STUDENTS_NUM  10
+#define STUDENTS_NUM 10000  
 
 typedef struct temp {
     char  sname[8];
-    char  sid[11];    //  ÈçU202315123
-    short  scores[8]; //  8ÃÅ¿ÎµÄ·ÖÊı
-    short  average;   //  Æ½¾ù·Ö
+    char  sid[11];    //  å¦‚U202315123
+    short  scores[8]; //  8é—¨è¯¾çš„åˆ†æ•°
+    short  average;   //  å¹³å‡åˆ†
 }student;
 
+void initStudents(student* s, int num) {
+    srand((unsigned int)time(NULL));
 
+    sprintf(s[0].sname, "S0xxx");
+    sprintf(s[0].sid, "U2023xxxxx");
+    for (int j = 0; j < 8; j++) {
+        s[0].scores[j] = rand() % 80 + 20;
+    }
+    s[0].average = 0;
 
-void display(student* s, int num) {
-    for (int i = 0; i < num; i++) {
-        printf("Ñ§Éú%d: %s %s ¸÷¿Æ³É¼¨£º", i, s[i].sname, s[i].sid);
+    for (int i = 1; i < num; i++) {
+
+        sprintf(s[i].sname, "S%04d", i);
+        sprintf(s[i].sid, "U0000%05d", i);
         for (int j = 0; j < 8; j++) {
-            printf("%d ", s[i].scores[j]);
+            s[i].scores[j] = rand() % 80 + 20;
         }
-        printf("Æ½¾ù·Ö£º%d\n", s[i].average);
+        s[i].average = 0;
     }
 }
 
-void initStudents(student* s, int num) {
-    strcpy(s[0].sname, "czh");
-    strcpy(s[0].sid, "U202315513");
-    for (int i = 0; i < 8; i++) {
-        s[0].scores[i] = 75;
+void display(student* s, int num) {
+    printf("å‰äº”ä½ï¼š\n");
+    for (int i = 0; i < 5; i++) {
+        printf("%s\t %s\tå„ç§‘æˆç»©ï¼š", s[i].sname, s[i].sid);
+        for (int j = 0; j < 8; j++) {
+            printf("%d ", s[i].scores[j]);
+        }
+        printf("å¹³å‡åˆ†ï¼š%d\n", s[i].average);
     }
-
-    strcpy(s[1].sname, "aaa");
-    strcpy(s[1].sid, "U202311111");
-    for (int i = 0; i < 8; i++) {
-        s[1].scores[i] = 77;
-    }
-
-    strcpy(s[2].sname, "bbb");
-    strcpy(s[2].sid, "U202311177");
-    for (int i = 0; i < 8; i++) {
-        s[2].scores[i] = 60;
-    }
-
-    strcpy(s[3].sname, "ccc");
-    strcpy(s[3].sid, "U202311122");
-    for (int i = 0; i < 8; i++) {
-        s[3].scores[i] = 80;
-    }
-
-    strcpy(s[4].sname, "ddd");
-    strcpy(s[4].sid, "U202311199");
-    for (int i = 0; i < 8; i++) {
-        s[4].scores[i] = 90;
-    }
-
-    strcpy(s[5].sname, "eee");
-    strcpy(s[5].sid, "U202311188");
-    for (int i = 0; i < 8; i++) {
-        s[5].scores[i] = 88;
-    }
-
-    strcpy(s[6].sname, "fff");
-    strcpy(s[6].sid, "U202311133");
-    for (int i = 0; i < 8; i++) {
-        s[6].scores[i] = 70;
-    }
-
-    strcpy(s[7].sname, "ggg");
-    strcpy(s[7].sid, "U202311144");
-    for (int i = 0; i < 8; i++) {
-        s[7].scores[i] = 66;
-    }
-
-    strcpy(s[8].sname, "hhh");
-    strcpy(s[8].sid, "U202311155");
-    for (int i = 0; i < 8; i++) {
-        s[8].scores[i] = 69;
-    }
-
-    strcpy(s[9].sname, "iii");
-    strcpy(s[9].sid, "U202311166");
-    for (int i = 0; i < 8; i++) {
-        s[9].scores[i] = 72;
-    }
-
-    for (int i = 0; i < num; i++) {
-        s[i].average = 0;
+    printf("åäº”ä½ï¼š\n");
+    for (int i = num - 5; i < num; i++) {
+        printf("%s\t %s\tå„ç§‘æˆç»©ï¼š", s[i].sname, s[i].sid);
+        for (int j = 0; j < 8; j++) {
+            printf("%d ", s[i].scores[j]);
+        }
+        printf("å¹³å‡åˆ†ï¼š%d\n", s[i].average);
     }
 }
 
 extern void computeAverageScore(student* s, int num);
 
-/*
-void computeAverageScore(student* s, int num) {
-    for (int i = 0; i < num; i++) {
-        int sum = 0;
-        for (int j = 0; j < 8; j++) {
-            sum += s[i].scores[j];
-        }
-        s[i].average = sum / 8;
-    }
-}
-*/
 
+/*
 void sortStudentsByAverage(student* s, int num) {
     for (int i = 0; i < num - 1; i++) {
         for (int j = 0; j < num - i - 1; j++) {
@@ -116,63 +68,57 @@ void sortStudentsByAverage(student* s, int num) {
         }
     }
 }
+*/
 
-/*
-void sortStudentsByAverage(student* s, int low, int high){
-    if(low < high){
+void sortStudentsByAverage(student* s, int low, int high) {
+    if (low < high) {
         float pivot = s[high].average;
         int i = low - 1;
-        for(int j=low; j<high; j++){
-            if(s[j].average > pivot){
+        for (int j = low; j < high; j++) {
+            if (s[j].average > pivot) {
                 i++;
                 student temp = s[i];
                 s[i] = s[j];
                 s[j] = temp;
             }
         }
-        student temp = s[i+1];
-        s[i+1] = s[high];
+        student temp = s[i + 1];
+        s[i + 1] = s[high];
         s[high] = temp;
 
-        int pi = i+1;
-        quickSort(s, low, pi-1);
-        quickSort(s, pi+1, high);
+        int pi = i + 1;
+        sortStudentsByAverage(s, low, pi - 1);
+        sortStudentsByAverage(s, pi + 1, high);
     }
 }
-*/
-int main()
-{
-    student s[STUDENTS_NUM];
-    LARGE_INTEGER freq, start, end;
-    double time;
-    //printf("%d %0x\n", sizeof(student),&s);
-    initStudents(s, STUDENTS_NUM);         // ³õÊ¼»¯Ñ§ÉúĞÅÏ¢
+
+int main() {
+    student* s = malloc(STUDENTS_NUM * sizeof(student));
+    initStudents(s, STUDENTS_NUM);
     display(s, STUDENTS_NUM);
-
-
+    LARGE_INTEGER freq, start, end;
     QueryPerformanceFrequency(&freq);
+
+    // æµ‹è¯•è®¡ç®—å¹³å‡åˆ†æ€§èƒ½
     QueryPerformanceCounter(&start);
     computeAverageScore(s, STUDENTS_NUM);
     QueryPerformanceCounter(&end);
-    time = (end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
-    printf("¼ÆËãÆ½¾ù³É¼¨ÓÃÊ±£º%.3f ms\n", time);
+
+    double compute_time = (end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
+    printf("\nè®¡ç®—å¹³å‡åˆ†ç”¨æ—¶ï¼š%.2f ms\n", compute_time);
     display(s, STUDENTS_NUM);
 
-
-    QueryPerformanceFrequency(&freq);
+    // æµ‹è¯•æ’åºæ€§èƒ½
     QueryPerformanceCounter(&start);
-    computeAverageScore(s, STUDENTS_NUM);
-    sortStudentsByAverage(s, STUDENTS_NUM);
-    //sortStudentsByAverage(s, 0, STUDENTS_NUM-1);
-    //time = (end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
-    printf("ÅÅĞòÑ§ÉúÓÃÊ±£º%.3f ms\n", time);
+    //sortStudentsByAverage(s, STUDENTS_NUM);
+    sortStudentsByAverage(s, 0, STUDENTS_NUM - 1);
+    QueryPerformanceCounter(&end);
+
+    double sort_time = (end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
+    printf("\næ’åºç”¨æ—¶ï¼š%.2f ms\n", sort_time);
     display(s, STUDENTS_NUM);
 
+    free(s);
     return 0;
-
-
-    /*
-
-    */
 }
 
