@@ -36,19 +36,19 @@ void initStudents(student* s, int num) {
 
 void display(student* s, int num) {
     for (int i = 0; i < 5; i++) {
-        printf("%s\t %s\t各科成绩：", s[i].sname, s[i].sid);
+        printf("%s\t %s\t各科成绩:", s[i].sname, s[i].sid);
         for (int j = 0; j < 8; j++) {
             printf("%d ", s[i].scores[j]);
         }
-        printf("平均分：%d\n", s[i].average);
+        printf("平均分:%d\n", s[i].average);
     }
     printf("......\n");
     for (int i = num - 5; i < num; i++) {
-        printf("%s\t %s\t各科成绩：", s[i].sname, s[i].sid);
+        printf("%s\t %s\t各科成绩:", s[i].sname, s[i].sid);
         for (int j = 0; j < 8; j++) {
             printf("%d ", s[i].scores[j]);
         }
-        printf("平均分：%d\n", s[i].average);
+        printf("平均分:%d\n", s[i].average);
     }
 }
 
@@ -125,8 +125,8 @@ int main() {
     printf("\n排序后:\n");
     display(s, STUDENTS_NUM);
 
-    printf("\n计算平均分用时：%.2f ms\n", compute_time);
-    printf("排序用时：%.2f ms\n", sort_time);
+    printf("\n计算平均分用时:%.2f ms\n", compute_time);
+    printf("排序用时:%.2f ms\n", sort_time);
     free(s);
     return 0;
 }
